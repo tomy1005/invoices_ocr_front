@@ -1,0 +1,10 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  min-height: 100vh;
+  box-sizing: border-box;
+  flex: 0 0 25%;
+  max-width: 25%;
+  min-width: 250px;
+}

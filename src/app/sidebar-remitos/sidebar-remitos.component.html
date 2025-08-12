@@ -1,0 +1,33 @@
+<div class="sidebar bg-light p-4 h-100 border-end">
+  <form [formGroup]="remitoForm" (ngSubmit)="onSubmit()" class="needs-validation" novalidate>
+    <h2 class="mb-4">Cargar Remito</h2>
+    <div class="mb-3">
+      <label for="empresa" class="form-label">Empresa</label>
+      <select id="empresa" class="form-select" formControlName="empresa" required>
+        <option value="" disabled selected>Seleccione una empresa</option>
+        <option *ngFor="let empresa of empresas" [value]="empresa.id">{{ empresa.nombre }}</option>
+      </select>
+    </div>
+    <div class="mb-3">
+      <label for="fecha" class="form-label">Fecha del remito</label>
+      <input id="fecha" type="date" class="form-control" formControlName="fecha" required />
+    </div>
+    <div class="mb-3">
+      <label for="cuit" class="form-label">CUIT</label>
+      <input id="cuit" type="text" class="form-control" formControlName="cuit" maxlength="11" pattern="\d{11}"
+        required />
+      <div *ngIf="remitoForm.get('cuit')?.invalid && remitoForm.get('cuit')?.touched" class="invalid-feedback d-block">
+        El CUIT debe tener 11 dígitos numéricos.
+      </div>
+    </div>
+    <div class="mb-3">
+      <label for="archivo" class="form-label">Imagen o PDF</label>
+      <input id="archivo" type="file" class="form-control" (change)="onFileChange($event)" multiple
+        accept="image/jpeg,image/png,application/pdf" />
+      <div *ngIf="remitoForm.get('archivo')?.value" class="form-text">
+        Archivo seleccionado: {{ remitoForm.get('archivo')?.value?.[0]?.name }}
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary w-100">Cargar Remito</button>
+  </form>
+</div>
