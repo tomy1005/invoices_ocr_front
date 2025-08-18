@@ -4,7 +4,9 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "start:qa": "ng serve --configuration=qa",
     "build": "ng build",
+    "build:qa": "ng build --configuration=qa",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
@@ -20,6 +22,8 @@
     "@angular/router": "^17.2.0",
     "animate.css": "^4.1.1",
     "bootstrap": "^5.3.7",
+    "bootstrap-icons": "^1.13.1",
+    "file-saver": "^2.0.5",
     "ngx-spinner": "^17.0.0",
     "ngx-toastr": "^19.0.0",
     "rxjs": "~7.8.0",
@@ -30,6 +34,7 @@
     "@angular-devkit/build-angular": "^17.2.0",
     "@angular/cli": "^17.2.0",
     "@angular/compiler-cli": "^17.2.0",
+    "@types/file-saver": "^2.0.7",
     "@types/jasmine": "~5.1.0",
     "jasmine-core": "~5.1.0",
     "karma": "~6.4.0",

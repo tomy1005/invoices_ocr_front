@@ -14,3 +14,5 @@ describe('MistralApiService', () => {
     expect(service).toBeTruthy();
   });
 });
+
+

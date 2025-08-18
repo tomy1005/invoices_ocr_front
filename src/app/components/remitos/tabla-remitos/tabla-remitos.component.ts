@@ -2,7 +2,6 @@ import { Component, Input, ChangeDetectorRef, Output, EventEmitter, OnDestroy } 
 import { FormArray, FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { NgxSpinnerService } from 'ngx-spinner';
-import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 
 @Component({
