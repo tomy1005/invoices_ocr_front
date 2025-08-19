@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { MistralApiService } from './mistral-api.service';
+import { MistralApiService } from '../../mistral-api.service';
 
 describe('MistralApiService', () => {
   let service: MistralApiService;

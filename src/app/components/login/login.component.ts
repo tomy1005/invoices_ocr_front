@@ -2,19 +2,20 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
   selector: 'app-login',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss'],  
+  styleUrls: ['./login.component.scss'],
 
 })
 export class LoginComponent {
   showPassword = false; // 👈 Para controlar la visibilidad
 
-  constructor(private fb: FormBuilder, private router:Router) {}
+  constructor(private fb: FormBuilder, private router: Router, private authService: AuthService) { }
 
   loginForm = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
@@ -22,11 +23,16 @@ export class LoginComponent {
   });
 
   onSubmit() {
-    this.router.navigate(['/remitos/main'])
+
     if (this.loginForm.valid) {
-      
-      console.log(this.loginForm.value);
-      
+      const { email, password } = this.loginForm.value;
+      this.authService.signin({ email: email, password: password }).subscribe(data => {
+        localStorage.setItem('token', data.token ?? '');
+        localStorage.setItem('enterpriseId',data.enterprise ?? '');
+        localStorage.setItem('roles', data.roles ?? '');
+        localStorage.setItem('userId', data.id ?? '');
+        this.router.navigate(['/remitos/main']);
+      });
     } else {
       this.loginForm.markAllAsTouched();
     }

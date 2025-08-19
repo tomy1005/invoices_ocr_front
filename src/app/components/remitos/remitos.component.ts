@@ -15,8 +15,6 @@ export class RemitosComponent {
   items: any[] | null = null;
 
   constructor(private spinner: NgxSpinnerService) {
-    console.log('funciona');
-    
   }
 
   onItemsProcesados(items: any[]) {

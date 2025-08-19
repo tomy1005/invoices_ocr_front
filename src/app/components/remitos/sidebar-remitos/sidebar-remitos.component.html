@@ -31,3 +31,26 @@
     <button type="submit" class="btn btn-primary w-100">Cargar Remito</button>
   </form>
 </div>
+<div class="bg-light p-2">
+  <button type="button" class="btn btn-danger w-100" data-bs-toggle="modal" data-bs-target="#logoutModal">
+    Cerrar sesión
+  </button>
+</div>
+
+<div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Cierre de sesion</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        ¿Estás seguro que deseas cerrar la sesión?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="logout()">Cerrar sesion</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Volver</button>
+      </div>
+    </div>
+  </div>
+</div>

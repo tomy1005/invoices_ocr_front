@@ -1,10 +1,11 @@
 import { Component, OnInit, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { MistralApiService } from '../../../services/mistral-api.service';
+import { MistralApiService } from '../../../services/mistral/mistral-api.service';
 import { CommonModule } from '@angular/common';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ToastrService, ToastrModule } from 'ngx-toastr';
+import { AuthService } from '../../../services/auth/auth.service';
 
 @Component({
   selector: 'app-sidebar-remitos',
@@ -27,7 +28,7 @@ export class SidebarRemitosComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  constructor(private fb: FormBuilder, private mistralApi: MistralApiService, private toastr: ToastrService) {
+  constructor(private fb: FormBuilder, private mistralApi: MistralApiService, private toastr: ToastrService, private authService:AuthService) {
     this.remitoForm = this.fb.group({
       empresa: [null, Validators.required],
       fecha: [null, Validators.required],
@@ -111,8 +112,15 @@ export class SidebarRemitosComponent implements OnInit, OnDestroy {
         });
     }
   }
+  
+  logout(){
+    this.authService.signout();
+  }
+  
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
   }
+
+  
 }
