@@ -21,9 +21,9 @@ export class LoginComponent {
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(6)]],
   });
-  
+
   loginError: boolean = false;
-  
+
   onSubmit() {
 
     if (this.loginForm.valid) {
@@ -35,7 +35,11 @@ export class LoginComponent {
         localStorage.setItem('userId', data.id ?? '');
         this.router.navigate(['/remitos/main']);
       }, error => {
-        this.loginError = true
+        this.loginError = true;
+        setTimeout(() => {
+          this.loginError = false;
+        }, 2000);
+
       });
     } else {
       this.loginForm.markAllAsTouched();

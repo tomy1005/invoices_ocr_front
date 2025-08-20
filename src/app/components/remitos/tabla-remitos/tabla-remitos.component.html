@@ -36,8 +36,7 @@
   </table>
   <div class="d-flex gap-2">
     <button type="button" class="btn btn-outline-secondary" (click)="addItem()">Agregar fila</button>
-    <button type="submit" class="btn btn-primary">Guardar</button>
-    <button type="button" class="btn btn-danger" (click)="mostrarModalLimpiar()">Limpiar tabla</button>
+    <button type="button" class="btn btn-danger" (click)="mostrarModalLimpiar()" *ngIf="items.length > 0" >Limpiar tabla</button>
     <button type="button" class="btn btn-success" (click)="exportarCSV()" *ngIf="items.length > 0">Exportar a CSV</button>
   </div>
 </form>
@@ -45,7 +44,7 @@
 <!-- Modal de confirmación para agregar items -->
 <div class="modal-backdrop" *ngIf="showConfirmModal"
   style="position: fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.3); display:flex; align-items:center; justify-content:center; z-index:1000;">
-  <div class="modal-content" style="background:white; padding:2rem; border-radius:8px; min-width:300px;">
+  <div class="modal-content" style="background:white; padding:2rem; border-radius:8px; max-width:300px;">
     <h3>La tabla ya tiene remitos. ¿Desea agregar los nuevos remitos a la tabla existente?</h3>
     <div style="display:flex; gap:1rem; justify-content:flex-end; margin-top:1.5rem;">
       <button type="button" class="btn btn-primary" (click)="confirmarAgregarItems()">Sí, agregar</button>
@@ -57,7 +56,7 @@
 <!-- Modal de confirmación para limpiar tabla -->
 <div class="modal-backdrop" *ngIf="showClearModal"
   style="position: fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.3); display:flex; align-items:center; justify-content:center; z-index:1000;">
-  <div class="modal-content" style="background:white; padding:2rem; border-radius:8px; min-width:300px;">
+  <div class="modal-content" style="background:white; padding:2rem; border-radius:8px; max-width:300px;">
     <h3>¿Está seguro que desea limpiar la tabla? Esta acción eliminará todos los registros.</h3>
     <div style="display:flex; gap:1rem; justify-content:flex-end; margin-top:1.5rem;">
       <button type="button" class="btn btn-danger" (click)="confirmarLimpiarTabla()">Sí, limpiar</button>
