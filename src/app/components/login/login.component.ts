@@ -21,17 +21,21 @@ export class LoginComponent {
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(6)]],
   });
-
+  
+  loginError: boolean = false;
+  
   onSubmit() {
 
     if (this.loginForm.valid) {
       const { email, password } = this.loginForm.value;
       this.authService.signin({ email: email, password: password }).subscribe(data => {
         localStorage.setItem('token', data.token ?? '');
-        localStorage.setItem('enterpriseId',data.enterprise ?? '');
+        localStorage.setItem('enterpriseId', data.enterprise ?? '');
         localStorage.setItem('roles', data.roles ?? '');
         localStorage.setItem('userId', data.id ?? '');
         this.router.navigate(['/remitos/main']);
+      }, error => {
+        this.loginError = true
       });
     } else {
       this.loginForm.markAllAsTouched();
