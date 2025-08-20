@@ -22,6 +22,8 @@ export class TablaRemitosComponent implements OnDestroy {
   pendingItemsToAdd: any[] | null = null;
 
   columns = [
+    { key: 'date', label: 'Fecha', type: 'text', width: '15%' },
+    { key: 'company', label: 'Proveedor', type: 'text', width: '15%' },
     { key: 'codigo', label: 'Código', type: 'text', width: '15%' },
     { key: 'descripcion', label: 'Descripción', type: 'text', width: '35%' },
     { key: 'cantidad', label: 'Cantidad', type: 'number', width: '15%' },
@@ -56,7 +58,7 @@ export class TablaRemitosComponent implements OnDestroy {
     return this.tablaForm.get('items') as FormArray;
   }
 
-  setItems(items: any[]) {
+  setItems(items: any[]) {    
     // Limpiar items actuales
     while (this.items.length) {
       this.items.removeAt(0);
@@ -64,6 +66,8 @@ export class TablaRemitosComponent implements OnDestroy {
     // Agregar nuevos items
     for (const item of items) {
       const itemGroup = this.fb.group({
+        date: [item.date ?? '', Validators.required],
+        company: [item.company ?? '', Validators.required],
         codigo: [item.codigo ?? '', Validators.required],
         descripcion: [item.descripcion ?? '', Validators.required],
         cantidad: [item.cantidad ?? 1, [Validators.required, Validators.min(1)]],
@@ -137,6 +141,8 @@ export class TablaRemitosComponent implements OnDestroy {
     for (const itemCtrl of this.items.controls) {
       const item = itemCtrl.value;
       rows.push({
+        Fecha:item.date,
+        Proveedor:item.company,
         Codigo: item.codigo,
         Descripcion: item.descripcion,
         Cantidad: item.cantidad,
@@ -145,7 +151,7 @@ export class TablaRemitosComponent implements OnDestroy {
     }
     const csvRows = [
       header.join(','),
-      ...rows.map(row => [row.Codigo, row.Descripcion, row.Cantidad, row['Precio Unitario']].map(val => '"' + (val ?? '') + '"').join(','))
+      ...rows.map(row => [row.Fecha,row.Proveedor,row.Codigo, row.Descripcion, row.Cantidad, row['Precio Unitario']].map(val => '"' + (val ?? '') + '"').join(','))
     ];
     const csvContent = csvRows.join('\r\n');
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
@@ -176,6 +182,8 @@ export class TablaRemitosComponent implements OnDestroy {
     if (this.pendingItemsToAdd) {
       for (const item of this.pendingItemsToAdd) {
         const itemGroup = this.fb.group({
+          date: [item.date ?? '', Validators.required],
+          company: [item.company ?? '', Validators.required],
           codigo: [item.codigo ?? '', Validators.required],
           descripcion: [item.descripcion ?? '', Validators.required],
           cantidad: [item.cantidad ?? 1, [Validators.required, Validators.min(1)]],

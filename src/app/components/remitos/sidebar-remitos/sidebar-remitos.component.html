@@ -13,14 +13,6 @@
       <input id="fecha" type="date" class="form-control" formControlName="fecha" required />
     </div>
     <div class="mb-3">
-      <label for="cuit" class="form-label">CUIT</label>
-      <input id="cuit" type="text" class="form-control" formControlName="cuit" maxlength="11" pattern="\d{11}"
-        required />
-      <div *ngIf="remitoForm.get('cuit')?.invalid && remitoForm.get('cuit')?.touched" class="invalid-feedback d-block">
-        El CUIT debe tener 11 dígitos numéricos.
-      </div>
-    </div>
-    <div class="mb-3">
       <label for="archivo" class="form-label">Imagen o PDF</label>
       <input id="archivo" type="file" class="form-control" (change)="onFileChange($event)" multiple
         accept="image/jpeg,image/png,application/pdf" />
@@ -48,7 +40,7 @@
         ¿Estás seguro que deseas cerrar la sesión?
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="logout()">Cerrar sesion</button>
+        <button type="button" class="btn btn-secondary" (click)="logout()" data-bs-dismiss="modal">Cerrar sesion</button>
         <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Volver</button>
       </div>
     </div>

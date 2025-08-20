@@ -11,6 +11,12 @@
     <tbody>
       <tr *ngFor="let group of items.controls; let i = index" [formGroup]="castFormGroup(group)">
         <td>
+          <input type="text" formControlName="date" class="form-control w-100" />
+        </td>
+        <td>
+          <input type="text" formControlName="company" class="form-control w-100" />
+        </td>
+        <td>
           <input type="text" formControlName="codigo" class="form-control w-100" />
         </td>
         <td>

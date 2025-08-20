@@ -28,43 +28,15 @@ export class SidebarRemitosComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  constructor(private fb: FormBuilder, private mistralApi: MistralApiService, private toastr: ToastrService, private authService:AuthService) {
+  constructor(private fb: FormBuilder, private mistralApi: MistralApiService, private toastr: ToastrService, private authService: AuthService) {
     this.remitoForm = this.fb.group({
       empresa: [null, Validators.required],
       fecha: [null, Validators.required],
-      cuit: ['', [Validators.required, Validators.pattern(/^\d{11}$/)]],
-      archivos: [null, Validators.required]  // plural y obligatorio
+      archivos: [null, Validators.required]
     });
   }
 
   ngOnInit(): void { }
-
-  /*onSubmit() {
-    if (this.remitoForm.valid) {
-      const remitoData = { ...this.remitoForm.value };
-      if (remitoData.archivo && remitoData.archivo instanceof FileList) {
-        const archivo = remitoData.archivo[0];
-        this.procesarRemitoStart.emit();
-        this.mistralApi.procesarRemito(archivo)
-          .pipe(takeUntil(this.destroy$))
-          .subscribe({
-            next: (respuesta) => {
-              this.itemsProcesados.emit(respuesta.items || []);
-              this.procesarRemitoEnd.emit();
-              this.toastr.success('Escaneo exitoso', '¡Éxito!', { positionClass: 'toast-bottom-right', timeOut: 3000, progressBar: true, closeButton: true });
-              console.log('Remito procesado:', respuesta);
-            },
-            error: (err) => {
-              this.procesarRemitoEnd.emit();
-              this.toastr.error('Hubo un error, vuelva a intentarlo', 'Error', { positionClass: 'toast-bottom-right', timeOut: 4000, progressBar: true, closeButton: true });
-              console.error('Error al procesar el remito:', err);
-            }
-          });
-      } else {
-        console.log('Remito enviado (sin archivo):', remitoData);
-      }
-    }
-  }*/
 
   onFileChange(event: Event) {
     const input = event.target as HTMLInputElement;
@@ -76,19 +48,22 @@ export class SidebarRemitosComponent implements OnInit, OnDestroy {
   }
   onSubmit() {
     if (this.remitoForm.valid) {
+      const { fecha, empresa } = this.remitoForm.value;
       const archivos = this.remitoForm.get('archivos')?.value as FileList;
       if (!archivos || archivos.length === 0) {
         this.toastr.error('Debes subir al menos un archivo.');
         return;
       }
-  
+
       const formData = new FormData();
       for (let i = 0; i < archivos.length; i++) {
-        formData.append('invoices', archivos[i]); // <- clave exacta requerida por el backend
+        formData.append('invoices', archivos[i]);
+        formData.append('date', fecha);
+        formData.append('company', empresa);
       }
-  
+
       this.procesarRemitoStart.emit();
-  
+
       this.mistralApi.procesarMultiplesRemitos(formData)
         .pipe(takeUntil(this.destroy$))
         .subscribe({
@@ -97,11 +72,17 @@ export class SidebarRemitosComponent implements OnInit, OnDestroy {
             resultados.forEach((r: any) => {
               this.toastr.success(`Archivo procesado: ${r.filename}`, 'Éxito');
             });
-  
+
             // Emitir todos los items encontrados
-            const todosLosItems = resultados.flatMap((r: any) => r.data.items || []);
+            const todosLosItems = resultados.flatMap((r: any) =>
+              (r.data.items || []).map((item: any) => ({
+                ...item,
+                date: fecha,
+                company: empresa
+              }))
+            );
             this.itemsProcesados.emit(todosLosItems);
-  
+
             this.procesarRemitoEnd.emit();
           },
           error: (err) => {
@@ -112,15 +93,14 @@ export class SidebarRemitosComponent implements OnInit, OnDestroy {
         });
     }
   }
-  
-  logout(){
+
+  logout() {
     this.authService.signout();
   }
-  
+
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
   }
 
-  
 }
